@@ -1,0 +1,1281 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Quiz Master</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    min-height:100vh;
+    background:linear-gradient(135deg,#667eea,#764ba2);
+}
+
+.container{
+    width:92%;
+    max-width:700px;
+    margin:auto;
+    padding:25px 0;
+}
+
+.screen{
+    display:none;
+}
+
+.screen.active{
+    display:block;
+}
+
+.card{
+    background:white;
+    border-radius:25px;
+    padding:30px 22px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.2);
+}
+
+/* HOME */
+
+.home{
+    text-align:center;
+    margin-top:60px;
+}
+
+.logo{
+    font-size:65px;
+}
+
+h1{
+    font-size:42px;
+    color:#5b4bc4;
+    margin:10px 0;
+}
+
+.tagline{
+    color:#666;
+    font-size:18px;
+    margin-bottom:30px;
+}
+
+.main-btn{
+    border:0;
+    padding:16px 35px;
+    border-radius:50px;
+    background:linear-gradient(135deg,#ff7b54,#ff4d6d);
+    color:white;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.main-btn:active{
+    transform:scale(0.96);
+}
+
+.info{
+    display:flex;
+    gap:10px;
+    margin-top:30px;
+}
+
+.info div{
+    flex:1;
+    background:#f3f3ff;
+    padding:15px 5px;
+    border-radius:15px;
+}
+
+/* SUBJECT */
+
+.title{
+    text-align:center;
+    color:#5b4bc4;
+    margin-bottom:25px;
+}
+
+.subjects{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:15px;
+}
+
+.subject{
+    border:0;
+    border-radius:20px;
+    padding:25px 10px;
+    background:#f2f1ff;
+    font-size:18px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.subject:active{
+    transform:scale(0.96);
+}
+
+.subject span{
+    display:block;
+    font-size:40px;
+    margin-bottom:10px;
+}
+
+/* QUIZ */
+
+.quiz-top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:15px;
+}
+
+.badge,
+.timer{
+    padding:8px 13px;
+    border-radius:20px;
+    font-weight:bold;
+}
+
+.badge{
+    background:#eeeaff;
+}
+
+.timer{
+    background:#fff0f0;
+    color:#e63946;
+}
+
+.progress-bg{
+    width:100%;
+    height:10px;
+    background:#eee;
+    border-radius:20px;
+    margin-bottom:25px;
+}
+
+.progress{
+    height:100%;
+    width:0%;
+    background:#5b4bc4;
+    border-radius:20px;
+}
+
+.question{
+    font-size:23px;
+    line-height:1.4;
+    margin-bottom:22px;
+}
+
+.options{
+    display:grid;
+    gap:12px;
+}
+
+.option{
+    width:100%;
+    text-align:left;
+    padding:16px;
+    border:2px solid #ddd;
+    border-radius:15px;
+    background:white;
+    font-size:17px;
+    cursor:pointer;
+}
+
+.option:active{
+    transform:scale(0.99);
+}
+
+.option.correct{
+    background:#d9fbe5;
+    border-color:#28a745;
+}
+
+.option.wrong{
+    background:#ffe0e0;
+    border-color:#dc3545;
+}
+
+.feedback{
+    text-align:center;
+    font-weight:bold;
+    min-height:30px;
+    margin:15px 0;
+}
+
+.next-btn{
+    width:100%;
+    padding:15px;
+    border:0;
+    border-radius:15px;
+    background:#5b4bc4;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+    display:none;
+}
+
+/* RESULT */
+
+.result{
+    text-align:center;
+}
+
+.result-icon{
+    font-size:70px;
+}
+
+.score{
+    font-size:55px;
+    font-weight:bold;
+    color:#5b4bc4;
+    margin:15px;
+}
+
+.result-message{
+    font-size:19px;
+    margin-bottom:20px;
+}
+
+@media(max-width:500px){
+
+    h1{
+        font-size:35px;
+    }
+
+    .info{
+        flex-direction:column;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+
+<!-- HOME -->
+
+<div id="home" class="screen active">
+
+    <div class="card home">
+
+        <div class="logo">🎯</div>
+
+        <h1>Quiz Master</h1>
+
+        <p class="tagline">
+            Learn • Play • Improve
+        </p>
+
+        <button
+            class="main-btn"
+            onclick="openSubjects()">
+
+            🚀 Start Quiz
+
+        </button>
+
+        <div class="info">
+
+            <div>
+                📚<br>
+                <b>Subjects</b>
+            </div>
+
+            <div>
+                ❓<br>
+                <b>Questions</b>
+            </div>
+
+            <div>
+                🏆<br>
+                <b>Score</b>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- SUBJECTS -->
+
+<div id="subjects" class="screen">
+
+    <div class="card">
+
+        <h2 class="title">
+            📚 Choose Subject
+        </h2>
+
+        <div class="subjects">
+
+            <button
+                class="subject"
+                onclick="startQuiz('science')">
+
+                <span>🧪</span>
+                Science
+
+            </button>
+
+
+            <button
+                class="subject"
+                onclick="startQuiz('math')">
+
+                <span>➗</span>
+                Maths
+
+            </button>
+
+
+            <button
+                class="subject"
+                onclick="startQuiz('hindi')">
+
+                <span>📖</span>
+                Hindi
+
+            </button>
+
+
+            <button
+                class="subject"
+                onclick="startQuiz('sst')">
+
+                <span>🌍</span>
+                Social Science
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- QUIZ -->
+
+<div id="quiz" class="screen">
+
+    <div class="card">
+
+        <div class="quiz-top">
+
+            <div class="badge" id="questionNumber">
+                1 / 10
+            </div>
+
+            <div class="timer">
+                ⏱️ <span id="time">20</span>
+            </div>
+
+        </div>
+
+
+        <div class="progress-bg">
+
+            <div
+                id="progress"
+                class="progress">
+            </div>
+
+        </div>
+
+
+        <h2
+            id="question"
+            class="question">
+        </h2>
+
+
+        <div
+            id="options"
+            class="options">
+        </div>
+
+
+        <div
+            id="feedback"
+            class="feedback">
+        </div>
+
+
+        <button
+            id="nextButton"
+            class="next-btn"
+            onclick="nextQuestion()">
+
+            Next Question ➡️
+
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- RESULT -->
+
+<div id="result" class="screen">
+
+    <div class="card result">
+
+        <div class="result-icon">
+            🏆
+        </div>
+
+        <h2 class="title">
+            Quiz Complete!
+        </h2>
+
+        <div class="score">
+
+            <span id="finalScore">
+                0
+            </span>
+            /10
+
+        </div>
+
+        <p
+            id="resultMessage"
+            class="result-message">
+        </p>
+
+        <p>
+            🔥 Best Streak:
+            <b id="bestStreak">0</b>
+        </p>
+
+        <br>
+
+        <button
+            class="main-btn"
+            onclick="restartQuiz()">
+
+            🔄 Play Again
+
+        </button>
+
+        <br><br>
+
+        <button
+            class="subject"
+            onclick="openSubjects()">
+
+            📚 Choose Subject
+
+        </button>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<script>
+
+/* =========================
+   QUESTIONS
+========================= */
+
+var quizData = {
+
+science: [
+
+{
+q:"पौधों में भोजन बनाने की प्रक्रिया क्या कहलाती है?",
+options:[
+"श्वसन",
+"प्रकाश संश्लेषण",
+"पाचन",
+"उत्सर्जन"
+],
+answer:1
+},
+
+{
+q:"मनुष्य के शरीर में रक्त को पंप करने वाला अंग कौन सा है?",
+options:[
+"फेफड़े",
+"मस्तिष्क",
+"हृदय",
+"गुर्दा"
+],
+answer:2
+},
+
+{
+q:"जल का रासायनिक सूत्र क्या है?",
+options:[
+"CO₂",
+"H₂O",
+"O₂",
+"NaCl"
+],
+answer:1
+},
+
+{
+q:"पृथ्वी का प्राकृतिक उपग्रह कौन है?",
+options:[
+"सूर्य",
+"चंद्रमा",
+"मंगल",
+"शुक्र"
+],
+answer:1
+},
+
+{
+q:"वायुमंडल में सबसे अधिक कौन सी गैस है?",
+options:[
+"ऑक्सीजन",
+"नाइट्रोजन",
+"कार्बन डाइऑक्साइड",
+"हाइड्रोजन"
+],
+answer:1
+},
+
+{
+q:"मानव शरीर का सबसे बड़ा अंग कौन सा है?",
+options:[
+"हृदय",
+"त्वचा",
+"फेफड़ा",
+"मस्तिष्क"
+],
+answer:1
+},
+
+{
+q:"सूर्य से हमें मुख्य रूप से क्या प्राप्त होता है?",
+options:[
+"प्रकाश और ऊष्मा",
+"केवल पानी",
+"केवल हवा",
+"मिट्टी"
+],
+answer:0
+},
+
+{
+q:"ऑक्सीजन का रासायनिक प्रतीक क्या है?",
+options:[
+"O",
+"Ox",
+"C",
+"N"
+],
+answer:0
+},
+
+{
+q:"ध्वनि किस माध्यम में यात्रा कर सकती है?",
+options:[
+"केवल हवा",
+"केवल पानी",
+"केवल ठोस",
+"ठोस, द्रव और गैस"
+],
+answer:3
+},
+
+{
+q:"पौधों में जल का परिवहन मुख्य रूप से किसके द्वारा होता है?",
+options:[
+"जाइलम",
+"फ्लोएम",
+"फूल",
+"बीज"
+],
+answer:0
+}
+
+],
+
+
+math:[
+
+{
+q:"5 + 7 = ?",
+options:["10","11","12","13"],
+answer:2
+},
+
+{
+q:"12 × 3 = ?",
+options:["24","36","42","30"],
+answer:1
+},
+
+{
+q:"100 का 25% कितना है?",
+options:["15","20","25","30"],
+answer:2
+},
+
+{
+q:"एक त्रिभुज की कितनी भुजाएँ होती हैं?",
+options:["2","3","4","5"],
+answer:1
+},
+
+{
+q:"10² का मान क्या है?",
+options:["10","20","100","1000"],
+answer:2
+},
+
+{
+q:"1 किलोमीटर में कितने मीटर होते हैं?",
+options:["100","500","1000","1500"],
+answer:2
+},
+
+{
+q:"15 - 8 = ?",
+options:["5","6","7","8"],
+answer:2
+},
+
+{
+q:"8 × 8 = ?",
+options:["56","64","72","88"],
+answer:1
+},
+
+{
+q:"एक वर्ग की कितनी भुजाएँ होती हैं?",
+options:["3","4","5","6"],
+answer:1
+},
+
+{
+q:"50 ÷ 5 = ?",
+options:["5","10","15","20"],
+answer:1
+}
+
+],
+
+
+hindi:[
+
+{
+q:"हिंदी भाषा की लिपि कौन सी है?",
+options:[
+"रोमन",
+"देवनागरी",
+"गुरुमुखी",
+"तमिल"
+],
+answer:1
+},
+
+{
+q:"‘सुंदर’ शब्द का विलोम क्या है?",
+options:[
+"अच्छा",
+"कुरूप",
+"बड़ा",
+"छोटा"
+],
+answer:1
+},
+
+{
+q:"‘जल’ का पर्यायवाची क्या है?",
+options:[
+"आकाश",
+"पानी",
+"अग्नि",
+"वायु"
+],
+answer:1
+},
+
+{
+q:"‘राम स्कूल जाता है।’ इस वाक्य में क्रिया कौन सी है?",
+options:[
+"राम",
+"स्कूल",
+"जाता है",
+"है"
+],
+answer:2
+},
+
+{
+q:"‘दिन’ का विलोम क्या है?",
+options:[
+"सुबह",
+"रात",
+"शाम",
+"प्रकाश"
+],
+answer:1
+},
+
+{
+q:"‘कमल’ किसका उदाहरण है?",
+options:[
+"संज्ञा",
+"क्रिया",
+"सर्वनाम",
+"विशेषण"
+],
+answer:0
+},
+
+{
+q:"‘मैं’ कौन सा शब्द है?",
+options:[
+"संज्ञा",
+"सर्वनाम",
+"क्रिया",
+"विशेषण"
+],
+answer:1
+},
+
+{
+q:"‘तेज’ का विलोम क्या है?",
+options:[
+"धीमा",
+"बड़ा",
+"सुंदर",
+"ऊँचा"
+],
+answer:0
+},
+
+{
+q:"‘विद्यालय’ का अर्थ क्या है?",
+options:[
+"खेल का मैदान",
+"पढ़ने का स्थान",
+"बाजार",
+"घर"
+],
+answer:1
+},
+
+{
+q:"‘पृथ्वी’ का पर्यायवाची क्या है?",
+options:[
+"धरती",
+"आकाश",
+"जल",
+"अग्नि"
+],
+answer:0
+}
+
+],
+
+
+sst:[
+
+{
+q:"भारत की राजधानी क्या है?",
+options:[
+"मुंबई",
+"जयपुर",
+"नई दिल्ली",
+"भोपाल"
+],
+answer:2
+},
+
+{
+q:"भारत का संविधान कब लागू हुआ?",
+options:[
+"15 अगस्त 1947",
+"26 जनवरी 1950",
+"2 अक्टूबर 1950",
+"14 नवंबर 1949"
+],
+answer:1
+},
+
+{
+q:"भारत का राष्ट्रीय पशु कौन सा है?",
+options:[
+"शेर",
+"हाथी",
+"बाघ",
+"हिरण"
+],
+answer:2
+},
+
+{
+q:"भारत का राष्ट्रीय पक्षी कौन सा है?",
+options:[
+"तोता",
+"मोर",
+"कबूतर",
+"गरुड़"
+],
+answer:1
+},
+
+{
+q:"भारतीय स्वतंत्रता दिवस कब मनाया जाता है?",
+options:[
+"26 जनवरी",
+"15 अगस्त",
+"2 अक्टूबर",
+"14 नवंबर"
+],
+answer:1
+},
+
+{
+q:"भारतीय गणतंत्र दिवस कब मनाया जाता है?",
+options:[
+"15 अगस्त",
+"26 जनवरी",
+"5 सितंबर",
+"2 अक्टूबर"
+],
+answer:1
+},
+
+{
+q:"महात्मा गांधी का जन्मदिन कब मनाया जाता है?",
+options:[
+"2 अक्टूबर",
+"15 अगस्त",
+"26 जनवरी",
+"14 नवंबर"
+],
+answer:0
+},
+
+{
+q:"राजस्थान की राजधानी क्या है?",
+options:[
+"उदयपुर",
+"जयपुर",
+"जोधपुर",
+"कोटा"
+],
+answer:1
+},
+
+{
+q:"भारत का राष्ट्रीय ध्वज किस नाम से जाना जाता है?",
+options:[
+"तिरंगा",
+"जन गण",
+"भारत ध्वज",
+"केसरिया"
+],
+answer:0
+},
+
+{
+q:"भारत का राष्ट्रीय फूल कौन सा है?",
+options:[
+"गुलाब",
+"कमल",
+"सूरजमुखी",
+"गेंदा"
+],
+answer:1
+}
+
+]
+
+};
+
+
+/* =========================
+   VARIABLES
+========================= */
+
+var currentSubject = "";
+var questions = [];
+var currentQuestion = 0;
+var score = 0;
+var streak = 0;
+var bestStreak = 0;
+var timeLeft = 20;
+var timer = null;
+var answered = false;
+
+
+/* =========================
+   SCREEN FUNCTION
+========================= */
+
+function showScreen(id){
+
+    var screens = document.querySelectorAll(".screen");
+
+    for(var i=0;i<screens.length;i++){
+
+        screens[i].classList.remove("active");
+
+    }
+
+    document.getElementById(id).classList.add("active");
+}
+
+
+/* =========================
+   OPEN SUBJECTS
+========================= */
+
+function openSubjects(){
+
+    clearInterval(timer);
+
+    showScreen("subjects");
+
+}
+
+
+/* =========================
+   START QUIZ
+========================= */
+
+function startQuiz(subject){
+
+    currentSubject = subject;
+
+    questions = quizData[subject];
+
+    currentQuestion = 0;
+
+    score = 0;
+
+    streak = 0;
+
+    bestStreak = 0;
+
+    showScreen("quiz");
+
+    loadQuestion();
+
+}
+
+
+/* =========================
+   LOAD QUESTION
+========================= */
+
+function loadQuestion(){
+
+    clearInterval(timer);
+
+    answered = false;
+
+    timeLeft = 20;
+
+    var data = questions[currentQuestion];
+
+    document.getElementById("questionNumber").innerHTML =
+        (currentQuestion + 1) + " / " + questions.length;
+
+    document.getElementById("question").innerHTML =
+        data.q;
+
+    document.getElementById("time").innerHTML =
+        timeLeft;
+
+    document.getElementById("feedback").innerHTML =
+        "";
+
+    document.getElementById("progress").style.width =
+        ((currentQuestion / questions.length) * 100) + "%";
+
+    document.getElementById("nextButton").style.display =
+        "none";
+
+
+    var box =
+        document.getElementById("options");
+
+    box.innerHTML = "";
+
+
+    for(var i=0;i<data.options.length;i++){
+
+        var button =
+            document.createElement("button");
+
+        button.className = "option";
+
+        button.innerHTML =
+            String.fromCharCode(65+i)
+            + ". "
+            + data.options[i];
+
+        button.onclick =
+            (function(index,btn){
+
+                return function(){
+
+                    selectAnswer(index,btn);
+
+                };
+
+            })(i,button);
+
+
+        box.appendChild(button);
+
+    }
+
+
+    timer = setInterval(function(){
+
+        timeLeft--;
+
+        document.getElementById("time").innerHTML =
+            timeLeft;
+
+        if(timeLeft <= 0){
+
+            clearInterval(timer);
+
+            if(!answered){
+
+                timeUp();
+
+            }
+
+        }
+
+    },1000);
+
+}
+
+
+/* =========================
+   SELECT ANSWER
+========================= */
+
+function selectAnswer(index,button){
+
+    if(answered){
+        return;
+    }
+
+    answered = true;
+
+    clearInterval(timer);
+
+    var data = questions[currentQuestion];
+
+    var buttons =
+        document.querySelectorAll(".option");
+
+
+    for(var i=0;i<buttons.length;i++){
+
+        buttons[i].disabled = true;
+
+    }
+
+
+    if(index === data.answer){
+
+        score++;
+
+        streak++;
+
+        if(streak > bestStreak){
+
+            bestStreak = streak;
+
+        }
+
+        button.classList.add("correct");
+
+        document.getElementById("feedback").innerHTML =
+            "✅ Correct! 🔥 " + streak + " Streak";
+
+    }
+
+    else{
+
+        streak = 0;
+
+        button.classList.add("wrong");
+
+        buttons[data.answer].classList.add("correct");
+
+        document.getElementById("feedback").innerHTML =
+            "❌ Wrong Answer!";
+
+    }
+
+
+    document.getElementById("nextButton").style.display =
+        "block";
+
+}
+
+
+/* =========================
+   TIME UP
+========================= */
+
+function timeUp(){
+
+    answered = true;
+
+    streak = 0;
+
+    var data = questions[currentQuestion];
+
+    var buttons =
+        document.querySelectorAll(".option");
+
+
+    for(var i=0;i<buttons.length;i++){
+
+        buttons[i].disabled = true;
+
+        if(i === data.answer){
+
+            buttons[i].classList.add("correct");
+
+        }
+
+    }
+
+
+    document.getElementById("feedback").innerHTML =
+        "⏰ Time Up!";
+
+
+    document.getElementById("nextButton").style.display =
+        "block";
+
+}
+
+
+/* =========================
+   NEXT QUESTION
+========================= */
+
+function nextQuestion(){
+
+    currentQuestion++;
+
+    if(currentQuestion >= questions.length){
+
+        showResult();
+
+    }
+
+    else{
+
+        loadQuestion();
+
+    }
+
+}
+
+
+/* =========================
+   RESULT
+========================= */
+
+function showResult(){
+
+    clearInterval(timer);
+
+    showScreen("result");
+
+    document.getElementById("finalScore").innerHTML =
+        score;
+
+    document.getElementById("bestStreak").innerHTML =
+        bestStreak;
+
+
+    var percentage =
+        (score / questions.length) * 100;
+
+    var message = "";
+
+
+    if(percentage === 100){
+
+        message =
+            "🏆 Perfect! बहुत शानदार!";
+
+    }
+
+    else if(percentage >= 80){
+
+        message =
+            "🌟 Excellent! बहुत अच्छा!";
+
+    }
+
+    else if(percentage >= 60){
+
+        message =
+            "👏 Great Job! थोड़ी और practice करो।";
+
+    }
+
+    else if(percentage >= 40){
+
+        message =
+            "💪 अच्छा प्रयास! फिर से कोशिश करो।";
+
+    }
+
+    else{
+
+        message =
+            "📚 कोई बात नहीं! Practice करते रहो।";
+
+    }
+
+
+    document.getElementById("resultMessage").innerHTML =
+        message;
+
+}
+
+
+/* =========================
+   RESTART
+========================= */
+
+function restartQuiz(){
+
+    startQuiz(currentSubject);
+
+}
+
+</script>
+
+</body>
+</html>
